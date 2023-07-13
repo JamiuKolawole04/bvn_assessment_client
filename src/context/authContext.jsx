@@ -5,14 +5,21 @@ import { registerUserRequest } from "../api";
 export const AuthContext = createContext({
   token: null,
   setToken: () => {},
-  registerInfo: { name: "", email: "", password: "", password_confirmation },
+  registerInfo: {
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  },
   registerUser: () => {},
   updateRegisterInfo: () => {},
   registerError: null,
   isRegisterLoading: false,
+  user: null,
 });
 
 export const AuthContextProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
   //   const [token, setToken] = useState("123");
   const [token, setToken] = useState(null);
   const [registerError, setRegisterError] = useState(null);
@@ -36,6 +43,7 @@ export const AuthContextProvider = ({ children }) => {
         setIsRegisterLoading(true);
         setRegisterError(null);
         const response = await registerUserRequest(registerInfo);
+        console.log({ response });
       } catch (err) {
         console.log({ err });
         // setRegisterError()
@@ -44,8 +52,6 @@ export const AuthContextProvider = ({ children }) => {
       }
 
       setIsRegisterLoading(false);
-
-      setUser(response.user);
     },
     [registerInfo]
   );
@@ -59,6 +65,7 @@ export const AuthContextProvider = ({ children }) => {
         updateRegisterInfo,
         isRegisterLoading,
         registerError,
+        user,
       }}
     >
       {children}

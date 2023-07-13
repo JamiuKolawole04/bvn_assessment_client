@@ -2,7 +2,7 @@ import axios from "../utils/axios";
 
 export const registerUserRequest = async () => {
   const { data } = await axios({
-    url: `/api/api/v1/signup`,
+    url: `/api/v1/signup`,
     method: "POST",
   });
 
@@ -11,7 +11,7 @@ export const registerUserRequest = async () => {
 
 export const loginUserRequest = async (userData) => {
   const { data } = await axios({
-    url: `/api/api/v1/login`,
+    url: `/api/v1/login`,
     method: "POST",
     data: userData,
   });

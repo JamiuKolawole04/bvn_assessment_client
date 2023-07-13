@@ -7,13 +7,14 @@ export const Register = () => {
   const { token, registerUser, registerInfo, updateRegisterInfo } =
     useAuthContext();
 
-  console.log({ registerInfo });
-
   if (token) {
     return <Navigate replace to="/" />;
   }
   return (
-    <form className="flex justify-center items-center flex-col mt-20 w-full m-auto max-w-xs">
+    <form
+      className="flex justify-center items-center flex-col mt-20 w-full m-auto max-w-xs"
+      onSubmit={registerUser}
+    >
       <h1 className="text-white font-bold mb-5">Register to verify your bvn</h1>
       <input
         type="text"
