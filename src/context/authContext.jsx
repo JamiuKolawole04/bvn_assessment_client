@@ -13,7 +13,7 @@ export const AuthContext = createContext({
 });
 
 export const AuthContextProvider = ({ children }) => {
-  //   const [token, setToken] = useState(null);
+  //   const [token, setToken] = useState("123");
   const [token, setToken] = useState(null);
   const [registerError, setRegisterError] = useState(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
@@ -21,6 +21,7 @@ export const AuthContextProvider = ({ children }) => {
     name: "",
     email: "",
     password: "",
+    password_confirmation: "",
   });
 
   const updateRegisterInfo = useCallback((info) => {
@@ -34,7 +35,7 @@ export const AuthContextProvider = ({ children }) => {
       try {
         setIsRegisterLoading(true);
         setRegisterError(null);
-        const response = await registerUserRequest();
+        const response = await registerUserRequest(registerInfo);
       } catch (err) {
         console.log({ err });
         // setRegisterError()

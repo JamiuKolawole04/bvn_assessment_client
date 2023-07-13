@@ -8,6 +8,7 @@ import {
 
 import App from "./App.jsx";
 import "./index.css";
+import "./app.css";
 import { Login } from "./pages/login.jsx";
 import { Register } from "./pages/register.jsx";
 import { AuthContextProvider } from "./context/authContext.jsx";
