@@ -5,7 +5,7 @@ import { registerUserRequest } from "../api";
 export const AuthContext = createContext({
   token: null,
   setToken: () => {},
-  registerInfo: { name: "", email: "", password: "" },
+  registerInfo: { name: "", email: "", password: "", password_confirmation },
   registerUser: () => {},
   updateRegisterInfo: () => {},
   registerError: null,

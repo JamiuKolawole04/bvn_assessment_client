@@ -1,10 +1,13 @@
 import React from "react";
-
-import { useAuthContext } from "../context/authContext";
 import { Navigate } from "react-router-dom";
 
+import { useAuthContext } from "../context/authContext";
+
 export const Register = () => {
-  const { token } = useAuthContext();
+  const { token, registerUser, registerInfo, updateRegisterInfo } =
+    useAuthContext();
+
+  console.log({ registerInfo });
 
   if (token) {
     return <Navigate replace to="/" />;
@@ -18,6 +21,9 @@ export const Register = () => {
         id="name"
         placeholder="Name"
         className="mb-8 w-full"
+        onChange={({ target: { value } }) =>
+          updateRegisterInfo({ ...registerInfo, name: value })
+        }
       />
       <input
         type="email"
@@ -25,6 +31,9 @@ export const Register = () => {
         id="email"
         placeholder="Email"
         className="mb-8  w-full"
+        onChange={({ target: { value } }) =>
+          updateRegisterInfo({ ...registerInfo, email: value })
+        }
       />
       <input
         type="password"
@@ -32,6 +41,9 @@ export const Register = () => {
         id="password"
         placeholder="Password"
         className="mb-8  w-full"
+        onChange={({ target: { value } }) =>
+          updateRegisterInfo({ ...registerInfo, password: value })
+        }
       />
       <input
         type="password"
@@ -39,6 +51,9 @@ export const Register = () => {
         id="confirmPassword"
         placeholder="Password confirmation"
         className="mb-8  w-full"
+        onChange={({ target: { value } }) =>
+          updateRegisterInfo({ ...registerInfo, password_confirmation: value })
+        }
       />
 
       <button type="submit" className="bg-green-400 w-full py-2 rounded">
