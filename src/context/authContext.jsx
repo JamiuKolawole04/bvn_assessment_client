@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from "react";
 
-import { registerUserRequest } from "../api";
+import { registerUserRequest, loginUserRequest } from "../api";
 
 export const AuthContext = createContext({
   token: null,
@@ -16,6 +16,11 @@ export const AuthContext = createContext({
   registerError: null,
   isRegisterLoading: false,
   user: null,
+  loginInfo: { email: "", password: "" },
+  loginError: null,
+  isLoginLoading: false,
+  updateLoginInfo: () => {},
+  loginUser: () => {},
 });
 
 export const AuthContextProvider = ({ children }) => {
@@ -30,6 +35,12 @@ export const AuthContextProvider = ({ children }) => {
     password: "",
     password_confirmation: "",
   });
+  const [loginInfo, setLoginInfo] = useState({
+    email: "",
+    password: "",
+  });
+  const [loginError, setLoginError] = useState(null);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
 
   const updateRegisterInfo = useCallback((info) => {
     setRegisterInfo(info);
@@ -42,11 +53,14 @@ export const AuthContextProvider = ({ children }) => {
       try {
         setIsRegisterLoading(true);
         setRegisterError(null);
+
         const response = await registerUserRequest(registerInfo);
         console.log({ response });
+        // setUser()
       } catch (err) {
         console.log({ err });
         // setRegisterError()
+        // localStorage.setItem("user", JSON.stringify())
       } finally {
         setIsRegisterLoading(false);
       }
@@ -54,6 +68,29 @@ export const AuthContextProvider = ({ children }) => {
       setIsRegisterLoading(false);
     },
     [registerInfo]
+  );
+  const updateLoginInfo = useCallback((info) => {
+    setLoginInfo(info);
+  }, []);
+
+  const loginUser = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      try {
+        setIsLoginLoading(true);
+        setLoginError(null);
+
+        const response = await loginUserRequest(loginInfo);
+        // setUser(response.user);
+        // localStorage.setItem("user", JSON.stringify(response.user));
+      } catch (err) {
+        console.log({ err });
+      } finally {
+        setIsLoginLoading(false);
+      }
+    },
+    [loginInfo]
   );
 
   return (
@@ -66,6 +103,11 @@ export const AuthContextProvider = ({ children }) => {
         isRegisterLoading,
         registerError,
         user,
+        loginInfo,
+        isLoginLoading,
+        loginError,
+        updateLoginInfo,
+        loginUser,
       }}
     >
       {children}
