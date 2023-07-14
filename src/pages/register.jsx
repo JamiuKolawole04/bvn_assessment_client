@@ -4,10 +4,15 @@ import { NavLink, Navigate } from "react-router-dom";
 import { useAuthContext } from "../context/authContext";
 
 export const Register = () => {
-  const { token, registerUser, registerInfo, updateRegisterInfo } =
-    useAuthContext();
+  const {
+    user,
+    registerUser,
+    registerInfo,
+    updateRegisterInfo,
+    isRegisterLoading,
+  } = useAuthContext();
 
-  if (token) {
+  if (user) {
     return <Navigate replace to="/" />;
   }
   return (
@@ -58,7 +63,7 @@ export const Register = () => {
       />
 
       <button type="submit" className="bg-green-400 w-full py-2 rounded">
-        Register
+        {isRegisterLoading ? "registering..." : "Register"}
       </button>
 
       <p className="text-white mt-4">

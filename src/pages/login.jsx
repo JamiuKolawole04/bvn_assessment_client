@@ -4,10 +4,10 @@ import { NavLink, Navigate } from "react-router-dom";
 import { useAuthContext } from "../context/authContext";
 
 export const Login = () => {
-  const { token, loginUser, loginInfo, updateLoginInfo, isLoginLoading } =
+  const { user, loginUser, loginInfo, updateLoginInfo, isLoginLoading } =
     useAuthContext();
 
-  if (token) {
+  if (user) {
     return <Navigate replace to="/" />;
   }
 

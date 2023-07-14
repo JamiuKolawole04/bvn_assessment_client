@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { registerUserRequest, loginUserRequest } from "../api";
 
 export const AuthContext = createContext({
-  token: null,
   setToken: () => {},
   registerInfo: {
     name: "",
@@ -33,14 +32,11 @@ export const AuthContext = createContext({
 export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
 
     setUser(JSON.parse(user));
-    setToken(token);
   }, []);
 
   const [user, setUser] = useState(null);
-  //   const [token, setToken] = useState("123");
   const [token, setToken] = useState(null);
   const [registerError, setRegisterError] = useState(null);
   const [isRegisterLoading, setIsRegisterLoading] = useState(false);
@@ -70,13 +66,27 @@ export const AuthContextProvider = ({ children }) => {
         setRegisterError(null);
 
         const response = await registerUserRequest(registerInfo);
-        console.log({ response });
-        setToken(response.data.token);
-        // setUser()
+        setUser(response.data.user);
+
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("token", response.data.token);
+        toast.success("register success", {
+          position: "top-right",
+        });
       } catch (err) {
-        console.log({ err });
-        // setRegisterError()
-        // localStorage.setItem("user", JSON.stringify())
+        if (err.response.data.errors?.email) {
+          toast.error(err.response.data.errors?.email[0], {
+            position: "top-right",
+          });
+        } else if (err.response.data.errors?.password) {
+          toast.error(err.response.data.errors?.password[0], {
+            position: "top-right",
+          });
+        } else {
+          toast.error(err.response.data?.message, {
+            position: "top-right",
+          });
+        }
       } finally {
         setIsRegisterLoading(false);
       }
@@ -99,7 +109,6 @@ export const AuthContextProvider = ({ children }) => {
 
         const response = await loginUserRequest(loginInfo);
         setUser(response.data.user);
-        setToken(response.data.token);
 
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("token", response.data.token);
@@ -130,7 +139,6 @@ export const AuthContextProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        token,
         registerInfo,
         registerUser,
         updateRegisterInfo,
