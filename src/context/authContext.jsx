@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
+import { toast } from "react-toastify";
 
 import { registerUserRequest, loginUserRequest } from "../api";
 
@@ -24,6 +31,14 @@ export const AuthContext = createContext({
 });
 
 export const AuthContextProvider = ({ children }) => {
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+
+    setUser(JSON.parse(user));
+    setToken(token);
+  }, []);
+
   const [user, setUser] = useState(null);
   //   const [token, setToken] = useState("123");
   const [token, setToken] = useState(null);
@@ -56,6 +71,7 @@ export const AuthContextProvider = ({ children }) => {
 
         const response = await registerUserRequest(registerInfo);
         console.log({ response });
+        setToken(response.data.token);
         // setUser()
       } catch (err) {
         console.log({ err });
@@ -82,10 +98,28 @@ export const AuthContextProvider = ({ children }) => {
         setLoginError(null);
 
         const response = await loginUserRequest(loginInfo);
-        // setUser(response.user);
-        // localStorage.setItem("user", JSON.stringify(response.user));
+        setUser(response.data.user);
+        setToken(response.data.token);
+
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("token", response.data.token);
+        toast.success("login success", {
+          position: "top-right",
+        });
       } catch (err) {
-        console.log({ err });
+        if (err.response.data.errors?.email) {
+          toast.error(err.response.data.errors?.email[0], {
+            position: "top-right",
+          });
+        } else if (err.response.data.errors?.password) {
+          toast.error(err.response.data.errors?.password[0], {
+            position: "top-right",
+          });
+        } else {
+          toast.error(err.response.data?.message, {
+            position: "top-right",
+          });
+        }
       } finally {
         setIsLoginLoading(false);
       }

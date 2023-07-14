@@ -1,10 +1,11 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 
 import { useAuthContext } from "../context/authContext";
 
 export const Login = () => {
-  const { token, loginUser, loginInfo, updateLoginInfo } = useAuthContext();
+  const { token, loginUser, loginInfo, updateLoginInfo, isLoginLoading } =
+    useAuthContext();
 
   if (token) {
     return <Navigate replace to="/" />;
@@ -39,8 +40,15 @@ export const Login = () => {
       />
 
       <button type="submit" className="bg-green-400 w-full py-2 rounded">
-        Login
+        {isLoginLoading ? "logging in..." : "Login"}
       </button>
+
+      <p className="text-white mt-4">
+        Don't have an account?{" "}
+        <NavLink to="/register" className="underline">
+          register
+        </NavLink>
+      </p>
     </form>
   );
 };

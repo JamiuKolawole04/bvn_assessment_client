@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 
 import { useAuthContext } from "../context/authContext";
 
@@ -60,6 +60,13 @@ export const Register = () => {
       <button type="submit" className="bg-green-400 w-full py-2 rounded">
         Register
       </button>
+
+      <p className="text-white mt-4">
+        Have an account?{" "}
+        <NavLink to="/login" className="underline">
+          login
+        </NavLink>
+      </p>
     </form>
   );
 };
