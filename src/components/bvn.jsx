@@ -28,6 +28,7 @@ export const Bvn = () => {
       const { data } = await axios({
         method: "POST",
         url: `${proxyUrl}${baseUrl}`,
+        // url: baseUrl,
         headers: {
           token: "SXFn2GA8.HwmyddDZkgmSdODrmtkHu1TwqPpagnKZ5PPE",
           "Content-Type": "application/json",
@@ -43,7 +44,7 @@ export const Bvn = () => {
       setBvnData(data.data);
       return data;
     } catch (err) {
-      toast.error(err.response.data.message, {
+      toast.error(err?.response?.data?.message, {
         position: "top-right",
       });
     } finally {
