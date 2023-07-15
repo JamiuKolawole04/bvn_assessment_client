@@ -27,8 +27,6 @@ export const Bvn = () => {
 
       const { data } = await axios({
         method: "POST",
-        // url: "https://api.sandbox.youverify.co/v2/api/identity/ng/bvn",
-        // url: "https://cors-anywhere.herokuapp.com/https://api.sandbox.youverify.co/v2/api/identity/ng/bvn",
         url: `${proxyUrl}${baseUrl}`,
         headers: {
           token: "SXFn2GA8.HwmyddDZkgmSdODrmtkHu1TwqPpagnKZ5PPE",
@@ -45,7 +43,6 @@ export const Bvn = () => {
       setBvnData(data.data);
       return data;
     } catch (err) {
-      console.log(err.response.data.message);
       toast.error(err.response.data.message, {
         position: "top-right",
       });
