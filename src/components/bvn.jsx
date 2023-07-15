@@ -27,8 +27,8 @@ export const Bvn = () => {
 
       const { data } = await axios({
         method: "POST",
-        // url: `${proxyUrl}${baseUrl}`,
-        url: baseUrl,
+        url: `${proxyUrl}${baseUrl}`,
+        // url: baseUrl,
         headers: {
           token: "SXFn2GA8.HwmyddDZkgmSdODrmtkHu1TwqPpagnKZ5PPE",
           "Content-Type": "application/json",
