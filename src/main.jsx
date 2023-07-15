@@ -9,7 +9,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
-import "./app.css";
 import { Login } from "./pages/login.jsx";
 import { Register } from "./pages/register.jsx";
 import { AuthContextProvider } from "./context/authContext.jsx";
