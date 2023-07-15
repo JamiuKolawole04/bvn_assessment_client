@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import { useAuthContext } from "../context/authContext";
 
 export const Bvn = () => {
   const proxyUrl = "https://cors-anywhere.herokuapp.com/";
   const baseUrl = "https://api.sandbox.youverify.co/v2/api/identity/ng/bvn";
+
   const { user } = useAuthContext();
 
   const [bvn, setBvn] = useState("");
   const [bvnData, setBvnData] = useState({});
   const [isBvnLoading, setIsBvnLoading] = useState(false);
-  //   found;
-  //   not_found
-
-  console.log({ bvnData });
 
   if (!user) {
     return <Navigate replace to="/login" />;
@@ -25,21 +23,6 @@ export const Bvn = () => {
     e.preventDefault();
 
     try {
-      //   const response = await fetch(`${proxyUrl}${baseUrl}`, {
-      //     method: "POSTs",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       token: `SXFn2GA8.HwmyddDZkgmSdODrmtkHu1TwqPpagnKZ5PPE`,
-      //       "Access-Control-Allow-Origin": "*",
-      //     },
-      //     body: JSON.stringify({
-      //       id: bvn,
-      //       isSubjectConsent: true,
-      //       premiumBVN: true,
-      //     }),
-      //   });
-      //   console.log({ response });
-
       setIsBvnLoading(true);
 
       const { data } = await axios({
@@ -62,7 +45,10 @@ export const Bvn = () => {
       setBvnData(data.data);
       return data;
     } catch (err) {
-      console.log({ err });
+      console.log(err.response.data.message);
+      toast.error(err.response.data.message, {
+        position: "top-right",
+      });
     } finally {
       setIsBvnLoading(false);
     }
@@ -88,13 +74,23 @@ export const Bvn = () => {
 
       <button
         type="submit"
-        className="bg-green-400 w-full py-2 rounded  disabled:cursor-not-allowed disabled:opacity-30"
+        className="bg-green-400 w-full py-2 rounded  disabled:cursor-not-allowed disabled:opacity-30 mb-5"
         disabled={bvn.length < 11}
       >
         {isBvnLoading ? "verifying..." : "verify"}
       </button>
-      {!bvnData?.dataValidation && (
-        <p className="text-white">{bvnData?.reason}</p>
+      {!bvnData?.dataValidation && !bvnData.allValidationPassed && (
+        <p className="text-white mt-3">{bvnData?.reason}</p>
+      )}
+
+      {bvnData.allValidationPassed && (
+        <Fragment>
+          <p className="text-white">bvn validation success</p>
+          <p className="text-white">
+            Name: {`${bvnData.firstName} ${bvnData.lastName}`}
+          </p>
+          <p></p>
+        </Fragment>
       )}
     </form>
   );
