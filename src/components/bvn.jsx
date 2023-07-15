@@ -49,6 +49,7 @@ export const Bvn = () => {
       });
     } finally {
       setIsBvnLoading(false);
+      setBvn("");
     }
   };
 
